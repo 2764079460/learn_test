@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.markehub.mapper.BlogMapper" >
+<!--  唯一编号 -->
+<resultMap id="BaseResultMap" type="com.markehub.entity.BlogBean" >
+    <!-- 字段: [] -->
+	<result column="id" property="id"/>
+    <!-- 字段: [] -->
+	<result column="user_id" property="userId"/>
+    <!-- 字段: [] -->
+	<result column="title" property="title"/>
+    <!-- 字段: [] -->
+	<result column="description" property="description"/>
+    <!-- 字段: [] -->
+	<result column="content" property="content"/>
+    <!-- 字段: [] -->
+	<result column="created" property="created"/>
+    <!-- 字段: [] -->
+	<result column="status" property="status"/>
+</resultMap>
+       
+<!-- m_blog table all fields -->
+<sql id="Base_Column_List" >
+	 id,user_id,title,description,content,created,status
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Example_Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+			<if test="id != null" >
+	    and id =  #{id}
+	</if>
+			<if test="userId != null" >
+	    and user_id =  #{userId}
+	</if>
+			 	<if test="title != null and title != ''" >
+	    and title =  #{title}
+	</if>
+			 	<if test="description != null and description != ''" >
+	    and description =  #{description}
+	</if>
+			<if test="content != null" >
+	    and content =  #{content}
+	</if>
+			<if test="created != null" >
+	    and created =  #{created}
+	</if>
+			<if test="status != null" >
+	    and status =  #{status}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="add" parameterType="Object" >
+  insert into m_blog(id,user_id,title,description,content,created,status)
+ values(#{id},#{userId},#{title},#{description},#{content},#{created},#{status})
+</insert>
+
+<!-- 插入记录 -->
+<insert id="batchAdd" parameterType="List" >
+   insert into m_blog(id,user_id,title,description,content,created,status)
+values
+<foreach collection="list" item="obj" index="index" separator="," > 
+ (#{obj.id},#{obj.userId},#{obj.title},#{obj.description},#{obj.content},#{obj.created},#{obj.status})</foreach>
+</insert>
+
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update m_blog set user_id=#{userId},title=#{title},description=#{description},content=#{content},created=#{created},status=#{status} where  id=#{id}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateBySelective" parameterType="Object" >
+	update m_blog set 
+	<trim  suffixOverrides="," >
+	<if test="userId != null  ">
+		user_id=#{userId},
+	</if>
+	<if test="title != null  and title != '' ">
+		title=#{title},
+	</if>
+	<if test="description != null  and description != '' ">
+		description=#{description},
+	</if>
+	<if test="content != null  ">
+		content=#{content},
+	</if>
+	<if test="created != null  ">
+		created=#{created},
+	</if>
+	<if test="status != null  ">
+		status=#{status},
+	</if>
+	</trim> where id=#{id}
+</update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete 	 from m_blog where id = #{id}
+</delete>
+
+<delete id="batchDelete" parameterType="List">
+	delete from  m_blog where  id in <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+ #{item}
+</foreach>
+
+</delete>
+
+<!-- 删除记录 -->
+<delete id="deleteByCondtion" parameterType="Object">
+	delete from m_blog
+	<include refid="Example_Where_Clause"/>
+</delete>
+
+<!-- 根据id查询 唯一编号 -->
+<select id="queryById"  resultMap="BaseResultMap" parameterType="Object">
+	select <include refid="Base_Column_List" /> 
+	 from m_blog where id = #{id}
+</select>
+
+<!-- 唯一编号 列表总数-->
+<select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+	select count(1) from m_blog 
+	<include refid="Example_Where_Clause"/>
+</select>
+  	
+<!-- 查询唯一编号列表 -->
+<select id="queryByPage" resultMap="BaseResultMap"  parameterType="Object">
+	select 
+	<include refid="Base_Column_List"/>
+	from m_blog 
+	<include refid="Example_Where_Clause"/>
+	limit #{start},#{pageNum}
+</select>
+
+<!-- 查询唯一编号列表 -->
+<select id="queryByList" resultMap="BaseResultMap"  parameterType="Object">
+	select 
+	<include refid="Base_Column_List"/>
+	from m_blog 
+	<include refid="Example_Where_Clause"/>
+</select>
+  	
+</mapper>   

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.markehub.mapper.UserMapper" >
+<!--  唯一编号 -->
+<resultMap id="BaseResultMap" type="com.markehub.entity.UserBean" >
+    <!-- 字段: [] -->
+	<result column="id" property="id"/>
+    <!-- 字段: [] -->
+	<result column="username" property="username"/>
+    <!-- 字段: [] -->
+	<result column="avatar" property="avatar"/>
+    <!-- 字段: [] -->
+	<result column="email" property="email"/>
+    <!-- 字段: [] -->
+	<result column="password" property="password"/>
+    <!-- 字段: [] -->
+	<result column="status" property="status"/>
+    <!-- 字段: [] -->
+	<result column="created" property="created"/>
+    <!-- 字段: [] -->
+	<result column="last_login" property="lastLogin"/>
+</resultMap>
+       
+<!-- m_user table all fields -->
+<sql id="Base_Column_List" >
+	 id,username,avatar,email,password,status,created,last_login
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Example_Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+			<if test="id != null" >
+	    and id =  #{id}
+	</if>
+			 	<if test="username != null and username != ''" >
+	    and username =  #{username}
+	</if>
+			 	<if test="avatar != null and avatar != ''" >
+	    and avatar =  #{avatar}
+	</if>
+			 	<if test="email != null and email != ''" >
+	    and email =  #{email}
+	</if>
+			 	<if test="password != null and password != ''" >
+	    and password =  #{password}
+	</if>
+			<if test="status != null" >
+	    and status =  #{status}
+	</if>
+			<if test="created != null" >
+	    and created =  #{created}
+	</if>
+			<if test="lastLogin != null" >
+	    and last_login =  #{lastLogin}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="add" parameterType="Object" >
+  insert into m_user(id,username,avatar,email,password,status,created,last_login)
+ values(#{id},#{username},#{avatar},#{email},#{password},#{status},#{created},#{lastLogin})
+</insert>
+
+<!-- 插入记录 -->
+<insert id="batchAdd" parameterType="List" >
+   insert into m_user(id,username,avatar,email,password,status,created,last_login)
+values
+<foreach collection="list" item="obj" index="index" separator="," > 
+ (#{obj.id},#{obj.username},#{obj.avatar},#{obj.email},#{obj.password},#{obj.status},#{obj.created},#{obj.lastLogin})</foreach>
+</insert>
+
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update m_user set username=#{username},avatar=#{avatar},email=#{email},password=#{password},status=#{status},created=#{created},last_login=#{lastLogin} where  id=#{id}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateBySelective" parameterType="Object" >
+	update m_user set 
+	<trim  suffixOverrides="," >
+	<if test="username != null  and username != '' ">
+		username=#{username},
+	</if>
+	<if test="avatar != null  and avatar != '' ">
+		avatar=#{avatar},
+	</if>
+	<if test="email != null  and email != '' ">
+		email=#{email},
+	</if>
+	<if test="password != null  and password != '' ">
+		password=#{password},
+	</if>
+	<if test="status != null  ">
+		status=#{status},
+	</if>
+	<if test="created != null  ">
+		created=#{created},
+	</if>
+	<if test="lastLogin != null  ">
+		last_login=#{lastLogin},
+	</if>
+	</trim> where id=#{id}
+</update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete 	 from m_user where id = #{id}
+</delete>
+
+<delete id="batchDelete" parameterType="List">
+	delete from  m_user where  id in <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+ #{item}
+</foreach>
+
+</delete>
+
+<!-- 删除记录 -->
+<delete id="deleteByCondtion" parameterType="Object">
+	delete from m_user
+	<include refid="Example_Where_Clause"/>
+</delete>
+
+<!-- 根据id查询 唯一编号 -->
+<select id="queryById"  resultMap="BaseResultMap" parameterType="Object">
+	select <include refid="Base_Column_List" /> 
+	 from m_user where id = #{id}
+</select>
+
+<!-- 唯一编号 列表总数-->
+<select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+	select count(1) from m_user 
+	<include refid="Example_Where_Clause"/>
+</select>
+  	
+<!-- 查询唯一编号列表 -->
+<select id="queryByPage" resultMap="BaseResultMap"  parameterType="Object">
+	select 
+	<include refid="Base_Column_List"/>
+	from m_user 
+	<include refid="Example_Where_Clause"/>
+	limit #{start},#{pageNum}
+</select>
+
+<!-- 查询唯一编号列表 -->
+<select id="queryByList" resultMap="BaseResultMap"  parameterType="Object">
+	select 
+	<include refid="Base_Column_List"/>
+	from m_user 
+	<include refid="Example_Where_Clause"/>
+</select>
+  	
+</mapper>   
