@@ -33,7 +33,7 @@ public class JwtFilter extends AuthenticatingFilter{
 
     @Override
     protected AuthenticationToken createToken(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        //2
+        //3
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String jwt = request.getHeader("Authorization");
         if (StringUtils.isEmpty(jwt)) {
@@ -43,9 +43,12 @@ public class JwtFilter extends AuthenticatingFilter{
         return new JwtToken(jwt);
     }
 
+    /**
+     *根据请求，拒绝通过处理，如果返回false，则不再去访问web控制器或action
+     */
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        //1
+        //2
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String jwt = request.getHeader("Authorization");
         if (StringUtils.isEmpty(jwt)) {
@@ -61,6 +64,9 @@ public class JwtFilter extends AuthenticatingFilter{
         }
     }
 
+    /**
+     *登录失败处理（认证令牌验证失败）
+     */
     @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
 
@@ -78,7 +84,6 @@ public class JwtFilter extends AuthenticatingFilter{
 
     @Override
     protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {
-
         HttpServletRequest httpServletRequest = WebUtils.toHttp(request);
         HttpServletResponse httpServletResponse = WebUtils.toHttp(response);
         httpServletResponse.setHeader("Access-control-Allow-Origin", httpServletRequest.getHeader("Origin"));

@@ -68,6 +68,7 @@ public class ShiroConfig {
         Map<String, Filter> filters = new HashMap<>();
         filters.put("jwt", jwtFilter);
         shiroFilter.setFilters(filters);
+        // ==filterMap.put("/**", "jwt"); // 主要通过注解方式校验权限
         Map<String, String> filterMap = shiroFilterChainDefinition.getFilterChainMap();
         shiroFilter.setFilterChainDefinitionMap(filterMap);
         return shiroFilter;
