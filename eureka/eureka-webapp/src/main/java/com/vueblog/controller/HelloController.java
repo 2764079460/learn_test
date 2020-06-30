@@ -20,6 +20,7 @@ public class HelloController {
     }
 
 
+
     @RequestMapping("/user")
     public String user(@RequestParam("name") String name) {
         return helloClient.user(name);
