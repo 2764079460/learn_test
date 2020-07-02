@@ -9,13 +9,19 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios';
 
+import mavonEditor from 'mavon-editor';
+
+import 'mavon-editor/dist/css/index.css'
+
 import './axios.js'
+import './permission'
 
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 
 Vue.use(ElementUI);
+Vue.use(mavonEditor);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
