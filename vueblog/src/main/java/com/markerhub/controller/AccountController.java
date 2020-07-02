@@ -14,10 +14,7 @@ import org.apache.shiro.web.filter.mgt.DefaultFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -52,12 +49,13 @@ public class AccountController {
                 .put("id",user.getId())
                 .put("username",user.getUsername())
                 .put("email",user.getEmail())
+                .put("avatar",user.getAvatar())
                 .map()
         );
     }
 
     @RequiresAuthentication
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public Result logout() {
         SecurityUtils.getSubject().logout();
         return Result.succ(null);
