@@ -10,7 +10,7 @@
               {{blog.title}}
             </router-link>
           </h4>
-          <p>{{blog.content}}</p>
+          <p>{{blog.description}}</p>
         </el-card>
       </el-timeline-item>
     </el-timeline>

@@ -9,6 +9,7 @@ import blogDetail from '@/view/BlogDetail'
 Vue.use(Router)
 
 export default new Router({
+  base:'/vueblog-vue/',
   mode:'history',
   routes: [
     {
