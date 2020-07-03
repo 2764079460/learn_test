@@ -47,6 +47,7 @@ exports.cssLoaders = function (options) {
     if (options.extract) {
       return ExtractTextPlugin.extract({
         use: loaders,
+        publicPath:'../../',   //publicPath为打包后app.css至index.html的相对路径
         fallback: 'vue-style-loader'
       })
     } else {
