@@ -1,6 +1,7 @@
 package com.vueblog.controller;
 
 import com.vueblog.client.helloClient;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class HelloController {
 
 
 
+    @GlobalTransactional
     @RequestMapping("/user")
     public String user(@RequestParam("name") String name) {
         return helloClient.user(name);
