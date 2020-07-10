@@ -1,19 +1,23 @@
 package com.markerhub.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.markerhub.common.Lang.Result;
 import com.markerhub.entity.Blog;
 import com.markerhub.service.BlogService;
+import com.markerhub.util.JedisClient;
 import com.markerhub.util.ShiroUtil;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 /**
  * <p>
@@ -30,6 +34,9 @@ public class BlogController {
     @Autowired
     BlogService blogService;
 
+    @Autowired
+    JedisClient jedisClient;
+
 
     @GetMapping("/list")
     public Result list(@RequestParam(defaultValue = "1") Integer currentPage) {
@@ -40,9 +47,20 @@ public class BlogController {
 
     @GetMapping("/{id}")
     public Result detail(@PathVariable(name = "id") Integer id) {
-        Blog blog = blogService.getById(id);
+        String bg = jedisClient.get("cs:blog:" + id);
+        Blog blog = JSONObject.parseObject(bg, Blog.class);
+        if (blog == null) {
+            blog = blogService.getById(id);
+            jedisClient.set("cs:blog:" + id, JSONObject.toJSONString(blog));
+        }
         Assert.notNull(blog,"该博客已被删除！");
         return Result.succ(blog);
+    }
+
+    @GetMapping("/del/{id}")
+    public Result delete(@PathVariable(name = "id") Integer id) {
+        Long i = jedisClient.del("cs:blog:"+id);
+        return Result.succ(i);
     }
 
 
