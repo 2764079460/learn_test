@@ -25,19 +25,20 @@
 			<artifactId>eureka-api</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<!--<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-feign</artifactId>
+		</dependency>-->
 
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-feign</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-eureka</artifactId>
-		</dependency>
+		</dependency>-->
 
 
 
@@ -47,25 +48,28 @@
 			<scope>provided</scope>
 		</dependency>-->
 
+		<!--<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>-->
 
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-alibaba-seata</artifactId>
-			<version>1.5.1.RELEASE</version>
+			<!--<version>1.5.1.RELEASE</version>-->
+			<version>2.1.0.RELEASE</version>
 			<exclusions>
 				<exclusion>
+					<artifactId>seata-all</artifactId>
 					<groupId>io.seata</groupId>
-					<artifactId>seata-spring-boot-starter</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>io.seata</groupId>
-			<artifactId>seata-spring-boot-starter</artifactId>
+			<artifactId>seata-all</artifactId>
 			<version>1.2.0</version>
 		</dependency>
-
-
 
 	</dependencies>
 
@@ -74,7 +78,8 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>Edgware.RELEASE</version>
+				<!--<version>Edgware.RELEASE</version>-->
+				<version>Greenwich.SR2</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
