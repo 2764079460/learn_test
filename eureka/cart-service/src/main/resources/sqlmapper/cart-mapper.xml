@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vueblog.mapper.CartMapper" >
+<!--  唯一编号 -->
+<resultMap id="BaseResultMap" type="com.vueblog.entity.CartBean" >
+    <!-- 字段: [主键] -->
+	<result column="id" property="id"/>
+    <!-- 字段: [用户ID] -->
+	<result column="user_id" property="userId"/>
+    <!-- 字段: [商品ID] -->
+	<result column="goods_id" property="goodsId"/>
+    <!-- 字段: [创建时间戳] -->
+	<result column="create_time" property="createTime"/>
+    <!-- 字段: [更新时间戳] -->
+	<result column="update_time" property="updateTime"/>
+    <!-- 字段: [删除标志 0：未删除；1：已删除] -->
+	<result column="is_deleted" property="isDeleted"/>
+</resultMap>
+       
+<!-- tb_cart table all fields -->
+<sql id="Base_Column_List" >
+	 id,user_id,goods_id,create_time,update_time,is_deleted
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Example_Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+			<if test="id != null" >
+	    and id =  #{id}
+	</if>
+			<if test="userId != null" >
+	    and user_id =  #{userId}
+	</if>
+			<if test="goodsId != null" >
+	    and goods_id =  #{goodsId}
+	</if>
+			<if test="createTime != null" >
+	    and create_time =  #{createTime}
+	</if>
+			<if test="updateTime != null" >
+	    and update_time =  #{updateTime}
+	</if>
+			<if test="isDeleted != null" >
+	    and is_deleted =  #{isDeleted}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="add" parameterType="Object" >
+  insert into tb_cart(id,user_id,goods_id,create_time,update_time,is_deleted)
+ values(#{id},#{userId},#{goodsId},now(),now(),#{isDeleted})
+</insert>
+
+<!-- 插入记录 -->
+<insert id="batchAdd" parameterType="List" >
+   insert into tb_cart(id,user_id,goods_id,create_time,update_time,is_deleted)
+values
+<foreach collection="list" item="obj" index="index" separator="," > 
+ (#{obj.id},#{obj.userId},#{obj.goodsId},#{obj.createTime},#{obj.updateTime},#{obj.isDeleted})</foreach>
+</insert>
+
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update tb_cart set user_id=#{userId},goods_id=#{goodsId},create_time=now(),update_time=now(),is_deleted=#{isDeleted} where  id=#{id}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateBySelective" parameterType="Object" >
+	update tb_cart set 
+	<trim  suffixOverrides="," >
+	<if test="userId != null  ">
+		user_id=#{userId},
+	</if>
+	<if test="goodsId != null  ">
+		goods_id=#{goodsId},
+	</if>
+	<if test="createTime != null  ">
+		create_time=#{createTime},
+	</if>
+	<if test="updateTime != null  ">
+		update_time=#{updateTime},
+	</if>
+	<if test="isDeleted != null  ">
+		is_deleted=#{isDeleted},
+	</if>
+	</trim> where id=#{id}
+</update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete 	 from tb_cart where id = #{id}
+</delete>
+
+<delete id="batchDelete" parameterType="List">
+	delete from  tb_cart where  id in <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+ #{item}
+</foreach>
+
+</delete>
+
+<!-- 删除记录 -->
+<delete id="deleteByCondtion" parameterType="Object">
+	delete from tb_cart
+	<include refid="Example_Where_Clause"/>
+</delete>
+
+<!-- 根据id查询 唯一编号 -->
+<select id="queryById"  resultMap="BaseResultMap" parameterType="Object">
+	select <include refid="Base_Column_List" /> 
+	 from tb_cart where id = #{id}
+</select>
+
+<!-- 唯一编号 列表总数-->
+<select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+	select count(1) from tb_cart 
+	<include refid="Example_Where_Clause"/>
+</select>
+  	
+<!-- 查询唯一编号列表 -->
+<select id="queryByPage" resultMap="BaseResultMap"  parameterType="Object">
+	select 
+	<include refid="Base_Column_List"/>
+	from tb_cart 
+	<include refid="Example_Where_Clause"/>
+	limit #{start},#{pageNum}
+</select>
+
+<!-- 查询唯一编号列表 -->
+<select id="queryByList" resultMap="BaseResultMap"  parameterType="Object">
+	select 
+	<include refid="Base_Column_List"/>
+	from tb_cart 
+	<include refid="Example_Where_Clause"/>
+</select>
+  	
+</mapper>   
