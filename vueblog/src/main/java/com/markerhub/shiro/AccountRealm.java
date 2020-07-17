@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created by xiangmiao on 2020/6/12.
+ * CachingRealm负责缓存处理，AuthenticationRealm负责认证，AuthorizingRealm负责授权，通常自定义的realm继承AuthorizingRealm
  */
 @Component
 public class AccountRealm extends AuthorizingRealm{
@@ -23,16 +24,19 @@ public class AccountRealm extends AuthorizingRealm{
     @Autowired
     UserService userService;
 
+    //支持UserNamePasswordToken
     @Override
     public boolean supports(AuthenticationToken token) {
         return token instanceof JwtToken;
     }
 
+    //授权
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         return null;
     }
 
+    //认证
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         JwtToken jwtToken = (JwtToken) token;
