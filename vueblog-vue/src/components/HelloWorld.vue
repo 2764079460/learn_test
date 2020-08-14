@@ -80,12 +80,16 @@
         </a>
       </li>
     </ul>
+
+    <websock></websock>
   </div>
 </template>
 
 <script>
+  import websock from '../components/websock.vue'
 export default {
   name: 'HelloWorld',
+  components:{websock},
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
