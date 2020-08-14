@@ -10,6 +10,7 @@ import com.markerhub.entity.Blog;
 import com.markerhub.service.BlogService;
 import com.markerhub.util.JedisClient;
 import com.markerhub.util.ShiroUtil;
+import com.markerhub.websokcet.WebSocket;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -37,6 +38,9 @@ public class BlogController {
     @Autowired
     JedisClient jedisClient;
 
+    @Autowired
+    WebSocket webSocket;
+
 
     @GetMapping("/list")
     public Result list(@RequestParam(defaultValue = "1") Integer currentPage) {
@@ -61,6 +65,12 @@ public class BlogController {
     public Result delete(@PathVariable(name = "id") Integer id) {
         Long i = jedisClient.del("cs:blog:"+id);
         return Result.succ(i);
+    }
+
+    @PostMapping("/webSocket")
+    public Result webSocket(String name,String msg) {
+        boolean result = webSocket.AppointSending(name,msg);
+        return Result.succ(result);
     }
 
 
