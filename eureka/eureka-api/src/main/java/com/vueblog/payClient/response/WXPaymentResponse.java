@@ -81,6 +81,27 @@ public class WXPaymentResponse {
 
     }
 
+    /**
+     * 异步退款结果通知地址
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping("/refundNotice")
+    public void refundNotice(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        LOG.info("微信异步通知");
+        JSONObject jsonObject = getResult(request);
+        LOG.info(jsonObject.toString());
+        String encodedText = jsonObject.getString("req_info");
+        WxPaymentClient paymentClient = new WxPaymentClient(PayKeys.wxAppId, PayKeys.wxMchId, PayKeys.wxMchKey, PayKeys.wxkeyPath);
+        //解密参数
+        //byte[] b = Base64Util.decode(map.get("req_info"));
+        String result = paymentClient.decode(encodedText, PayKeys.wxMchKey);
+        Map<String,String> data = WXPayHelper.xmlToMap(result);
+        LOG.info(data.toString());
+        responseToWeixin(response,null);
+    }
+
     public String payNotice(JSONObject jsonObject) throws Exception{
         //微信扫描
         String out_trade_no = jsonObject.getString("out_trade_no");

@@ -71,6 +71,19 @@ public class AliPaymentClient implements Serializable{
         return response.getBody();
     }
 
+    /**
+     * 退款
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public String Refund(String params) throws Exception{
+        AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
+        request.setBizContent(params);  //设置业务参数
+        AlipayTradeRefundResponse response = alipayClient.execute(request);
+        return response.getBody();
+    }
+
     public static void main(String[] args) throws Exception{
         String appId = "2016080600183217";
         String privateKey = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAIEQEL97K47ycgYzssLujTqII4Y2rPgqkFZXu818gSyyn8gc8UDdFbilsQ2vqcpzRh5wZw5g3WmgWDNqDhQj5ECryiwlRSlcK5dY4fKo0WCX42y9Tbzfy01L7tNuYb4q31f0yNKruAEO93nM/ZHmqpHvCtDF3xCgsdlETXD2448FAgMBAAECgYBOHFsGiJUkPrej6UYXlCkFc7+MSysERz50A0U2aFQFqVXq1xlsGGI9DorJrbclP/8ADSdSHG3kr5ayB03eAprxayKaRiS81wyK0ZVgnxRy7rITNIqsJMg2rHizjJ2K3NBF/njWaxyxJW5z67m/Z3B7NlVJuXFSArJc48M+cp6oAQJBAM8RcIGhxucMMDCEihJDoXIdtUJCAhG7fWvIXJaP29Cxvomjnd/2yiUqPtoeHLX9dS+nZHiN7IWKhaozuTNeKSUCQQCfj7NstNFKaaPkGpSNH6aMspmX+XJrAAqawjD/+92jbRc01Y4zNWoex8zMyEEITKS09INxLshGf2qXT7ZiKJhhAkApfpgqEg42zLV3c4frowveP1/MWEfr38OBbtRHA6sMBiJlmJkRgXX+vpl7wh8ExTbPht7WXbJxDFI+ykCpr4vVAkA4EDK36FR9M98M/7XgXBWV7A8Bkfj81ZfkRoUW/HUkvejgfISpQ4RU6ljwPxByjRN2LU+dzhU6h/x4y95GYQMhAkAcT8ZidQgykIK2WfL3qKneJUd2ejm5qpXx1FUoXt3eQ5lKyXtsBBtEPO47CmbyCBsKg5NfreD/FLo9/2tP2Crm";

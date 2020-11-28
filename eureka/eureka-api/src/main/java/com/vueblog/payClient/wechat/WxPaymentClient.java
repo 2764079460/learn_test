@@ -95,9 +95,47 @@ public class WxPaymentClient implements Serializable{
         return object.toString();
     }
 
+    /**
+     * 退款
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public Map<String, String> refund(String params) throws Exception {
+        JSONObject jsonObject = JSONObject.parseObject(params);
+        WxPayRefundRequest request = new WxPayRefundRequest();
+        request.setOutRefundNo(jsonObject.getString("out_refund_no"));
+        request.setOutTradeNo(jsonObject.getString("out_trade_no"));
+        request.setRefundFee(Integer.parseInt(jsonObject.getString("refund_fee")));
+        request.setTotalFee(Integer.parseInt(jsonObject.getString("total_fee")));
+        String notifyUrl = properties.getProperty("refundPdNotifyUrl");
+        //本地
+        if (System.getProperty("os.name").contains("Windows")) {
+            //ip调用
+            notifyUrl = properties.getProperty("refundNotifyUrl");
+        }
+        request.setNotifyUrl(notifyUrl);
+        WxPayRefundResult refundResult = wxPayService.refund(request);
+        return refundResult.toMap();
+    }
+
     public String getSandboxSignKey() throws Exception{
         String key = wxPayService.getSandboxSignKey();
         return key;
+    }
+
+    /**
+     * @Description 退款应答中的req_info解密
+     * @throws Exception
+     */
+    public String decode(String req_info, String mchKey) throws Exception{
+        //对加密串A做base64解码，得到加密串B Illegal key size or default parameters
+        byte[] base64 = this.wxPKCS7Decoder.decode(req_info);
+        //对商户key做md5，得到32位小写key*
+        String key = this.wxPKCS7Decoder.MD5(mchKey);
+        //用key*对加密串B做AES-256-ECB解密
+        String result = this.wxPKCS7Decoder.AES256Decode(base64,key.getBytes());
+        return result;
     }
 
     public static void main(String[] args) throws Exception{
