@@ -80,7 +80,7 @@ public class BlogController{
 	ResultMessage queryByPage(BlogBean model, HttpServletResponse response) throws Exception{
 		 blogService.queryByPage(model);
 		//设置页面数据
-		Map<String,Object> returnObject = new HashMap<String,Object>();
+		//Map<String,Object> returnObject = new HashMap<String,Object>();
 		//returnObject.put("total",pager.getRowCount());
 		//returnObject.put("rows", pager.getResults());
 		return null;
